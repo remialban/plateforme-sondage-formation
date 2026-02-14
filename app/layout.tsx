@@ -1,0 +1,23 @@
+import "./globals.css";
+import { AuthNavbar } from "@/app/components/AuthNavbar";
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <head>
+          <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.min.css"/>
+      </head>
+      <body>
+        <AuthNavbar />
+        <div className="container">
+            {children}
+
+        </div>
+      </body>
+    </html>
+  );
+}
