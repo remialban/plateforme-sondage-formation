@@ -69,6 +69,20 @@ export default function HydroliqueForm({ techniciens, onSelectionsChange, initia
         return techniciens.find(t => t.id === id);
     };
 
+    // Liens pour chaque niveau
+    const niveauLinks: { [key: string]: string } = {
+        '1': 'https://engie.sharepoint.com/sites/competences_formation/Programmes/Forms/AllItems.aspx?id=%2Fsites%2Fcompetences%5Fformation%2FProgrammes%2FMETIER%2FOFFRE%20GLOBALE%2FHYDRAULIQUE%20%26%20RESEAUX%2FNIV%201%2FL%20ESSENTIEL%20DE%20L%E2%80%99HYDRAULIQUE%20%2D%20MT00008569%2Epdf&parent=%2Fsites%2Fcompetences%5Fformation%2FProgrammes%2FMETIER%2FOFFRE%20GLOBALE%2FHYDRAULIQUE%20%26%20RESEAUX%2FNIV%201',
+        '2': 'https://engie.sharepoint.com/sites/competences_formation/Programmes/Forms/AllItems.aspx?id=%2Fsites%2Fcompetences%5Fformation%2FProgrammes%2FMETIER%2FOFFRE%20GLOBALE%2FHYDRAULIQUE%20%26%20RESEAUX%2FNIV%202%2FEQUILIBRAGE%20DES%20CIRCUITS%20HYDRAULIQUES%20%2D%20MT00002059%2Epdf&parent=%2Fsites%2Fcompetences%5Fformation%2FProgrammes%2FMETIER%2FOFFRE%20GLOBALE%2FHYDRAULIQUE%20%26%20RESEAUX%2FNIV%202',
+        '3': 'https://engie.sharepoint.com/sites/competences_formation/Programmes/Forms/AllItems.aspx?id=%2Fsites%2Fcompetences%5Fformation%2FProgrammes%2FMETIER%2FOFFRE%20GLOBALE%2FHYDRAULIQUE%20%26%20RESEAUX%2FNIV%203%2FCIRCUITS%20HYDRAULIQUES%20REGLAGES%20ET%20MISE%20AU%20POINT%20%2D%20MT00002068%2Epdf&parent=%2Fsites%2Fcompetences%5Fformation%2FProgrammes%2FMETIER%2FOFFRE%20GLOBALE%2FHYDRAULIQUE%20%26%20RESEAUX%2FNIV%203',
+    };
+
+    // Textes descriptifs pour chaque niveau
+    const niveauTexts: { [key: string]: string } = {
+        '1': 'L\'essentiel de l\'hydraulique niveau 1 - MT00008569',
+        '2': 'Équilibrage des circuits hydrauliques - MT00002059',
+        '3': 'Circuits hydrauliques - Réglages et mise au point niveau 2 - MT00002068',
+    };
+
     return (
         <div className="card mb-4">
             <div className="card-header bg-primary text-white">
@@ -146,15 +160,15 @@ export default function HydroliqueForm({ techniciens, onSelectionsChange, initia
                                                                     className="form-check-label"
                                                                     htmlFor={`niveau-${selection.technicienId}-${niveau}`}
                                                                 >
-                                                                    Niveau {niveau}{' '}
+                                                                    <strong>Niveau {niveau}</strong> - {niveauTexts[niveau]}{' '}
                                                                     <a
-                                                                        href="https://google.com"
+                                                                        href={niveauLinks[niveau]}
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
                                                                         className="badge bg-info text-decoration-none ms-1"
                                                                         onClick={(e) => e.stopPropagation()}
                                                                     >
-                                                                        🔗 Lien
+                                                                        🔗 Voir le programme
                                                                     </a>
                                                                 </label>
                                                             </div>
