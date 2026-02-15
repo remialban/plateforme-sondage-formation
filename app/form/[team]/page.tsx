@@ -57,7 +57,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
 
     return (
         <div>
-            <h1>Equipe {equipeNom}</h1>
+            <h1 className="text-primary">Equipe {equipeNom}</h1>
             {liste.length === 0 ? (
                 <p>Aucun technicien trouve pour cette equipe.</p>
             ) : (
