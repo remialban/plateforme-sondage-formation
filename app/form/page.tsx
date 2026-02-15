@@ -1,7 +1,12 @@
 import { supabase } from "@/lib/supabase";
 import Team from "@/app/form/Team";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function AboutPage() {
+    noStore();
     const { data, error } = await supabase
         .from("equipes")
         .select("reference, name, is_finished")
