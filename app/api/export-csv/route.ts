@@ -12,10 +12,12 @@ interface HydroliqueSelection extends TechnicienSelection {
 }
 
 interface FroidSelection extends TechnicienSelection {
+    id?: string;
     typeFormation: string;
     marque?: string;
     modele?: string;
     formationId?: number;
+    priorite?: string;
 }
 
 interface Answer {
@@ -166,6 +168,7 @@ export async function POST(request: NextRequest) {
                                 marque: item.marque || '',
                                 modele: item.modele || '',
                                 formation: formationName,
+                                priorite: item.priorite || '',
                             });
                         }
                     });
