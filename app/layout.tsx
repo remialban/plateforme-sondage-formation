@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-          <link rel="stylesheet" href="https://bootswatch.com/5/pulse/bootstrap.min.css"/>
+          <link rel="stylesheet" href="/bootstrap.min.css"/>
       </head>
       <body>
         <AuthNavbar />

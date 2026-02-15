@@ -55,11 +55,22 @@ export function AuthNavbar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-            <div className="container-fluid">
-                <Link className="navbar-brand" href="/">
-                    📋 Sondage Formation
-                </Link>
-                <div className="ms-auto">
+            <div className="container-fluid d-flex justify-content-between align-items-center">
+                <div style={{ flex: '1' }}>
+                    <Link className="navbar-brand" href="/">
+                        📋 Développons nos compétences
+                    </Link>
+                </div>
+
+                <div style={{ flex: '1' }} className="d-flex justify-content-center">
+                    <img
+                        src="/logo.png"
+                        alt="Logo"
+                        height={36}
+                    />
+                </div>
+
+                <div style={{ flex: '1' }} className="d-flex justify-content-end">
                     {isAdmin && (
                         <button
                             className="btn btn-danger"
@@ -74,5 +85,3 @@ export function AuthNavbar() {
         </nav>
     );
 }
-
-
