@@ -56,13 +56,21 @@ export default function HomePage() {
                                     📝 Remplir un formulaire
                                 </button>
 
-
                                 {role === 'admin' && (
                                     <button
                                         className="btn btn-success btn-lg"
                                         onClick={() => router.push('/dashboard')}
                                     >
-                                        📊 Accéder au Dashboard
+                                        📊 Accéder au Dashboard (Admin)
+                                    </button>
+                                )}
+
+                                {!role && (
+                                    <button
+                                        className="btn btn-outline-secondary btn-lg"
+                                        onClick={() => router.push('/login')}
+                                    >
+                                        🔐 Connexion Administrateur
                                     </button>
                                 )}
                             </div>
@@ -70,11 +78,6 @@ export default function HomePage() {
                             {role === 'admin' && (
                                 <div className="alert alert-info mt-4" role="alert">
                                     <strong>👤 Connecté en tant qu&apos;administrateur</strong>
-                                </div>
-                            )}
-                            {role === 'user' && (
-                                <div className="alert alert-secondary mt-4" role="alert">
-                                    <strong>👤 Connecté en tant qu&apos;utilisateur</strong>
                                 </div>
                             )}
 

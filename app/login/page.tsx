@@ -26,13 +26,13 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (!response.ok) {
-                setError(data.error || 'Mot de passe incorrect');
+                setError(data.error || 'Mot de passe administrateur incorrect');
                 setIsLoading(false);
                 return;
             }
 
-            // Redirection vers la page d'accueil
-            router.push('/');
+            // Redirection vers le dashboard (admin uniquement)
+            router.push('/dashboard');
 
             // Forcer le rafraîchissement pour mettre à jour la navbar
             router.refresh();
@@ -49,10 +49,10 @@ export default function LoginPage() {
                 <div className="col-md-6">
                     <div className="card shadow-lg">
                         <div className="card-header bg-primary text-white">
-                            <h1 className="h4 mb-0">🔐 Authentification</h1>
+                            <h1 className="h4 mb-0">🔐 Connexion Administrateur</h1>
                         </div>
                         <div className="card-body p-5">
-                            <p className="text-muted mb-4">Veuillez entrer votre mot de passe pour accéder à l&apos;application.</p>
+                            <p className="text-muted mb-4">Veuillez entrer le mot de passe administrateur pour accéder au dashboard.</p>
 
                             {error && (
                                 <div className="alert alert-danger" role="alert">

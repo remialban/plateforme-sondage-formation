@@ -6,58 +6,37 @@ export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
     // Routes publiques (accessibles sans authentification)
-    const publicRoutes = ['/login', '/api/login'];
+    const publicRoutes = ['/login', '/api/login', '/api/logout', '/form', '/', '/api/check-auth'];
 
     // Vérifier si la route est publique
     const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
     if (isPublicRoute) {
-        // Si déjà connecté, rediriger vers la page d'accueil
-        if (authToken) {
-            return NextResponse.redirect(new URL('/', request.url));
+        // Si déjà connecté en tant qu'admin sur /login, rediriger vers dashboard
+        if (pathname === '/login' && authToken && authRole?.value === 'admin') {
+            return NextResponse.redirect(new URL('/dashboard', request.url));
         }
         return NextResponse.next();
     }
 
-    // Vérifier l'authentification
-    if (!authToken) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    // Vérifier les permissions pour /form et /form/[team]
-    if (pathname.startsWith('/form')) {
-        if (authRole?.value === 'admin' || authRole?.value === 'user') {
-            return NextResponse.next();
-        }
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    // Vérifier les permissions pour /dashboard
+    // Vérifier les permissions pour /dashboard - ADMIN uniquement
     if (pathname.startsWith('/dashboard')) {
-        if (authRole?.value === 'admin') {
-            return NextResponse.next();
+        if (!authToken || authRole?.value !== 'admin') {
+            return NextResponse.redirect(new URL('/login', request.url));
         }
-        return NextResponse.redirect(new URL('/form', request.url));
+        return NextResponse.next();
     }
 
     // Vérifier les permissions pour les routes API
     if (pathname.startsWith('/api')) {
         // Routes API publiques (accessibles sans authentification)
-        if (pathname === '/api/login' || pathname === '/api/logout') {
+        if (pathname === '/api/login' || pathname === '/api/logout' || pathname === '/api/check-auth') {
             return NextResponse.next();
-        }
-
-        // Vérifier l'authentification
-        if (!authToken) {
-            return NextResponse.json(
-                { error: 'Non autorisé - Authentification requise' },
-                { status: 401 }
-            );
         }
 
         // Routes API réservées aux admins uniquement
         const adminOnlyRoutes = ['/api/export-csv', '/api/unvalidate-equipe'];
         if (adminOnlyRoutes.some(route => pathname.startsWith(route))) {
-            if (authRole?.value !== 'admin') {
+            if (!authToken || authRole?.value !== 'admin') {
                 return NextResponse.json(
                     { error: 'Accès refusé - Droits administrateur requis' },
                     { status: 403 }
@@ -65,7 +44,7 @@ export function middleware(request: NextRequest) {
             }
         }
 
-        // Autres routes API accessibles aux utilisateurs authentifiés
+        // Autres routes API accessibles sans authentification (pour les formulaires)
         return NextResponse.next();
     }
 

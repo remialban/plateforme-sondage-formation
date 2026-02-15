@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { UnvalidateButton } from "./UnvalidateButton";
 import { ExportButton } from "./ExportButton";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 type Equipe = {
     reference: string;
@@ -10,6 +12,16 @@ type Equipe = {
 };
 
 export default async function DashboardPage() {
+    // Vérification de l'authentification admin
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get('auth_token');
+    const authRole = cookieStore.get('auth_role');
+
+    // Rediriger si non authentifié ou non admin
+    if (!authToken || authRole?.value !== 'admin') {
+        redirect('/login');
+    }
+
     const { data: equipes, error } = await supabase
         .from("equipes")
         .select("reference, name, is_finished")

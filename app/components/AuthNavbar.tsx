@@ -8,9 +8,23 @@ export function AuthNavbar() {
     const router = useRouter();
     const pathname = usePathname();
     const [isLoading, setIsLoading] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    // Déterminer si on est authentifié en fonction de la page
-    const isAuthenticated = pathname !== '/login';
+    useEffect(() => {
+        // Vérifier si l'utilisateur est admin
+        fetch('/api/check-auth')
+            .then(res => res.json())
+            .then(data => {
+                if (data.role === 'admin') {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+            })
+            .catch(() => {
+                setIsAdmin(false);
+            });
+    }, [pathname]);
 
     const handleLogout = async () => {
         if (!confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
@@ -24,7 +38,8 @@ export function AuthNavbar() {
                 method: 'POST',
             });
 
-            router.push('/login');
+            setIsAdmin(false);
+            router.push('/');
             router.refresh();
         } catch (err) {
             console.error('Erreur lors de la déconnexion:', err);
@@ -34,7 +49,7 @@ export function AuthNavbar() {
     };
 
     // Ne pas afficher la navbar sur la page de login
-    if (!isAuthenticated) {
+    if (pathname === '/login') {
         return null;
     }
 
@@ -45,13 +60,15 @@ export function AuthNavbar() {
                     📋 Sondage Formation
                 </Link>
                 <div className="ms-auto">
-                    <button
-                        className="btn btn-danger"
-                        onClick={handleLogout}
-                        disabled={false}
-                    >
-                        {isLoading ? '⏳ Déconnexion...' : '🚪 Se déconnecter'}
-                    </button>
+                    {isAdmin && (
+                        <button
+                            className="btn btn-danger"
+                            onClick={handleLogout}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? '⏳ Déconnexion...' : '🚪 Se déconnecter (Admin)'}
+                        </button>
+                    )}
                 </div>
             </div>
         </nav>

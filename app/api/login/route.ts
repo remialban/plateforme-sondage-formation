@@ -12,29 +12,22 @@ export async function POST(request: NextRequest) {
         }
 
         const adminPassword = process.env.PASSWORD_ADMIN;
-        const userPassword = process.env.PASSWORD_USER;
 
-        let role = '';
-
-        if (password === adminPassword) {
-            role = 'admin';
-        } else if (password === userPassword) {
-            role = 'user';
-        } else {
+        if (password !== adminPassword) {
             return NextResponse.json(
-                { error: 'Mot de passe incorrect' },
+                { error: 'Mot de passe administrateur incorrect' },
                 { status: 401 }
             );
         }
 
-        // Créer une réponse avec un cookie de session
+        // Créer une réponse avec un cookie de session pour admin
         const response = NextResponse.json(
-            { role, success: true },
+            { role: 'admin', success: true },
             { status: 200 }
         );
 
-        // Définir un cookie sécurisé avec le rôle
-        response.cookies.set('auth_role', role, {
+        // Définir un cookie sécurisé avec le rôle admin
+        response.cookies.set('auth_role', 'admin', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
