@@ -242,7 +242,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                                                         href={formation.link}
                                                                                         target="_blank"
                                                                                         rel="noopener noreferrer"
-                                                                                        className="badge bg-info text-decoration-none"
+                                                                                        className="badge bg-primary text-white text-decoration-none"
                                                                                         onClick={(e) => e.stopPropagation()}
                                                                                     >
                                                                                         Lien vers les détails de la formation
