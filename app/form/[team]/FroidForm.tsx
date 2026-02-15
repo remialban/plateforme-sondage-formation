@@ -94,9 +94,10 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
     return (
         <div className="card mb-4">
             <div className="card-header bg-primary text-white">
-                <h2 className="h5 mb-0">Froid</h2>
+                <h2 className="h5 mb-0">Les machines frigorifiques</h2>
             </div>
             <div className="card-body">
+                <p>Indiquez pour les techniciens sélectionnés les types de formations adaptées ainsi que leur niveau de priorité.</p>
                 {/* Sélection de techniciens via dropdown simple */}
                 {!isReadOnly && (
                     <div className="mb-4">
