@@ -31,11 +31,13 @@ type HydroliqueSelection = {
 };
 
 type FroidSelection = {
+    id: string;
     technicienId: number;
     typeFormation: string;
     marque?: string;
     modele?: string;
     formationId?: number;
+    priorite?: string;
 };
 
 type SavedFormData = {

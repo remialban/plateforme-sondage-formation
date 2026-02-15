@@ -16,11 +16,13 @@ type Formation = {
 };
 
 type TechnicienSelection = {
+    id: string; // ID unique pour chaque sélection
     technicienId: number;
     typeFormation: string;
     marque?: string;
     modele?: string;
     formationId?: number;
+    priorite?: string;
 };
 
 type Props = {
@@ -39,50 +41,57 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
         onSelectionsChange(selections);
     }, [selections, onSelectionsChange]);
 
-    const techniciensFiltres = techniciens.filter(tech => {
-        return !selections.find(s => s.technicienId === tech.id);
-    });
+    const techniciensFiltres = techniciens;
 
     const ajouterTechnicien = () => {
         if (!selectedTechnicienId) return;
 
         const techId = parseInt(selectedTechnicienId);
-        if (selections.find(s => s.technicienId === techId)) {
-            return;
-        }
+
+        // Générer un ID unique pour cette sélection
+        const uniqueId = `${techId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
         setSelections([...selections, {
+            id: uniqueId,
             technicienId: techId,
-            typeFormation: 'compagnonnage'
+            typeFormation: 'compagnonnage',
+            priorite: '1'
         }]);
         setSelectedTechnicienId('');
     };
 
-    const supprimerTechnicien = (technicienId: number) => {
-        setSelections(selections.filter(s => s.technicienId !== technicienId));
+    const supprimerTechnicien = (id: string) => {
+        setSelections(selections.filter(s => s.id !== id));
     };
 
 
-    const modifierTypeFormation = (technicienId: number, typeFormation: string) => {
+    const modifierTypeFormation = (id: string, typeFormation: string) => {
         setSelections(selections.map(s =>
-            s.technicienId === technicienId ? { ...s, typeFormation, marque: '', modele: '' } : s
+            s.id === id ? { ...s, typeFormation, marque: '', modele: '', formationId: undefined } : s
         ));
     };
 
-    const modifierMarque = (technicienId: number, marque: string) => {
+    const modifierMarque = (id: string, marque: string) => {
         setSelections(selections.map(s =>
-            s.technicienId === technicienId ? { ...s, marque } : s
+            s.id === id ? { ...s, marque } : s
         ));
     };
 
-    const modifierModele = (technicienId: number, modele: string) => {
+    const modifierModele = (id: string, modele: string) => {
         setSelections(selections.map(s =>
-            s.technicienId === technicienId ? { ...s, modele } : s
+            s.id === id ? { ...s, modele } : s
         ));
     };
 
-    const modifierFormation = (technicienId: number, formationId: number) => {
+    const modifierFormation = (id: string, formationId: number) => {
         setSelections(selections.map(s =>
-            s.technicienId === technicienId ? { ...s, formationId } : s
+            s.id === id ? { ...s, formationId } : s
+        ));
+    };
+
+    const modifierPriorite = (id: string, priorite: string) => {
+        setSelections(selections.map(s =>
+            s.id === id ? { ...s, priorite } : s
         ));
     };
 
@@ -139,6 +148,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                     <tr>
                                         <th>Technicien</th>
                                         <th style={{ width: '250px' }}>Type de formation {!isReadOnly && <span className="text-danger">*</span>}</th>
+                                        <th style={{ width: '150px' }}>Priorité {!isReadOnly && <span className="text-danger">*</span>}</th>
                                         {!isReadOnly && <th style={{ width: '100px' }}>Actions</th>}
                                     </tr>
                                 </thead>
@@ -147,7 +157,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                         const tech = getTechnicienById(selection.technicienId);
                                         if (!tech) return null;
                                         return (
-                                            <Fragment key={selection.technicienId}>
+                                            <Fragment key={selection.id}>
                                                 <tr className="border-top border-3">
                                                     <td className="pt-3">
                                                         <span>{tech.prenom} {tech.nom}</span>
@@ -156,7 +166,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                         <select
                                                             className="form-select form-select-sm"
                                                             value={selection.typeFormation}
-                                                            onChange={(e) => modifierTypeFormation(selection.technicienId, e.target.value)}
+                                                            onChange={(e) => modifierTypeFormation(selection.id, e.target.value)}
                                                             required
                                                             disabled={isReadOnly}
                                                         >
@@ -166,12 +176,25 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                             <option value="devenir_frigoriste">Devenir frigoriste</option>
                                                         </select>
                                                     </td>
+                                                    <td className="pt-3">
+                                                        <select
+                                                            className="form-select form-select-sm"
+                                                            value={selection.priorite || '1'}
+                                                            onChange={(e) => modifierPriorite(selection.id, e.target.value)}
+                                                            required
+                                                            disabled={isReadOnly}
+                                                        >
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                        </select>
+                                                    </td>
                                                     {!isReadOnly && (
                                                         <td className="pt-3">
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-sm btn-danger"
-                                                                onClick={() => supprimerTechnicien(selection.technicienId)}
+                                                                onClick={() => supprimerTechnicien(selection.id)}
                                                             >
                                                                 Supprimer
                                                             </button>
@@ -180,7 +203,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                 </tr>
                                                 {selection.typeFormation === 'formation_constructeur' && (
                                                     <tr>
-                                                        <td colSpan={isReadOnly ? 2 : 3} className="bg-light pb-3">
+                                                        <td colSpan={isReadOnly ? 3 : 4} className="bg-light pb-3">
                                                             <div className="row g-3 px-3">
                                                                 <div className="col-md-6">
                                                                     <label className="form-label fw-bold small">
@@ -191,7 +214,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                                         className="form-control form-control-sm"
                                                                         placeholder="Entrez la marque..."
                                                                         value={selection.marque || ''}
-                                                                        onChange={(e) => modifierMarque(selection.technicienId, e.target.value)}
+                                                                        onChange={(e) => modifierMarque(selection.id, e.target.value)}
                                                                         required={!isReadOnly}
                                                                         disabled={isReadOnly}
                                                                     />
@@ -205,7 +228,7 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                                         className="form-control form-control-sm"
                                                                         placeholder="Entrez le modèle..."
                                                                         value={selection.modele || ''}
-                                                                        onChange={(e) => modifierModele(selection.technicienId, e.target.value)}
+                                                                        onChange={(e) => modifierModele(selection.id, e.target.value)}
                                                                         required={!isReadOnly}
                                                                         disabled={isReadOnly}
                                                                     />
@@ -214,9 +237,9 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                         </td>
                                                     </tr>
                                                 )}
-                                                {selection.typeFormation === 'formation_generalisee' && (
+                                                {selection.typeFormation === 'formation_generaliste' && (
                                                     <tr>
-                                                        <td colSpan={isReadOnly ? 2 : 3} className="bg-light pb-3">
+                                                        <td colSpan={isReadOnly ? 3 : 4} className="bg-light pb-3">
                                                             <div className="px-3">
                                                                 <label className="form-label fw-bold small mb-3">
                                                                     Sélectionnez une formation : {!isReadOnly && <span className="text-danger">*</span>}
@@ -227,16 +250,16 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                                             <input
                                                                                 className="form-check-input"
                                                                                 type="radio"
-                                                                                name={`formation-${selection.technicienId}`}
-                                                                                id={`formation-${selection.technicienId}-${formation.id}`}
+                                                                                name={`formation-${selection.id}`}
+                                                                                id={`formation-${selection.id}-${formation.id}`}
                                                                                 checked={selection.formationId === formation.id}
-                                                                                onChange={() => modifierFormation(selection.technicienId, formation.id)}
+                                                                                onChange={() => modifierFormation(selection.id, formation.id)}
                                                                                 required={!isReadOnly}
                                                                                 disabled={isReadOnly}
                                                                             />
                                                                             <label
                                                                                 className="form-check-label"
-                                                                                htmlFor={`formation-${selection.technicienId}-${formation.id}`}
+                                                                                htmlFor={`formation-${selection.id}-${formation.id}`}
                                                                             >
                                                                                 <span className="me-2">{formation.name}</span>
                                                                                 {formation.link && (

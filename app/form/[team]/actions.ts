@@ -10,11 +10,13 @@ type FormData = {
         priorite: string
     }>;
     froid: Array<{
+        id: string;
         technicienId: number;
         typeFormation: string;
         marque?: string;
         modele?: string;
-        formationId?: number
+        formationId?: number;
+        priorite?: string;
     }>;
 };
 
