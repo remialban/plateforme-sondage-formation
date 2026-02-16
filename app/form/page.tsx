@@ -16,7 +16,7 @@ export default async function AboutPage() {
 
     return (
         <div>
-            <h1>Sondage</h1>
+            <h1>Développons nos compétences</h1>
             <p>Sur cette page, vous pouvez répondre au sondage ou consulter votre sondage si vous avez déjà envoyé la réponse.</p>
 
             {error ? (
