@@ -10,6 +10,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
           <link rel="stylesheet" href="/bootstrap.min.css"/>
+          <title>Développons nos compétences</title>
       </head>
       <body>
         <AuthNavbar />
