@@ -171,8 +171,6 @@ export default function FroidForm({ techniciens, formations, onSelectionsChange,
                                                             disabled={isReadOnly}
                                                         >
                                                             <option value="compagnonnage">Compagnonnage</option>
-                                                            <option value="formation_generaliste">Formation généraliste</option>
-                                                            <option value="formation_constructeur">Formation constructeur</option>
                                                             <option value="devenir_frigoriste">Devenir frigoriste</option>
                                                         </select>
                                                     </td>
