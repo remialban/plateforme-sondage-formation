@@ -144,7 +144,7 @@ export default function HydroliqueForm({ techniciens, onSelectionsChange, initia
                                                 <td>{tech.prenom} {tech.nom}</td>
                                                 <td>
                                                     <div className="d-flex flex-column gap-2">
-                                                        {['1', '2', '3'].map((niveau) => (
+                                                        {['1', '2'].map((niveau) => (
                                                             <div key={niveau} className="form-check">
                                                                 <input
                                                                     className="form-check-input"
