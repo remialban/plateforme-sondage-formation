@@ -56,10 +56,10 @@ export default function TechnicienForm({ techniciens, onSelectionsChange, initia
     return (
         <div className="card mb-4">
             <div className="card-header bg-primary text-white">
-                <h2 className="h5 mb-0">L'Automatisme</h2>
+                <h2 className="h5 mb-0">Régulation - Télégestion</h2>
             </div>
             <div className="card-body">
-                <p>Indiquez le ou les techniciens ayant une bonne maitrise de l'électricité (méthodologie dépannage, lecture de schémas, ...) avec une appétence pour l'automatisme ou la régulation</p>
+                <p>Indiquez le ou les techniciens ayant une bonne maitrise de l'électricité (méthodologie dépannage, lecture de schémas, ...) avec une appétence pour la régulation et la télégestion</p>
 
                 {/* Sélection de techniciens via dropdown simple */}
                 {!isReadOnly && (
