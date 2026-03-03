@@ -89,7 +89,7 @@ export default function HydroliqueForm({ techniciens, onSelectionsChange, initia
                 <h2 className="h5 mb-0">L'équilibre hydraulique d'une installation</h2>
             </div>
             <div className="card-body">
-                <p>Identifiez les techniciens qui ont nécessité de gagner en maitrise sur le diagnostic ou l'équilibrage d'un réseau hydraulique de chauffage ou de climatisation. Sélectionnez l'un des trois niveaux proposé avec un niveau de priorité.</p>
+                <p>Identifiez les techniciens qui ont nécessité de gagner en maitrise sur le diagnostic ou l'équilibrage d'un réseau hydraulique de chauffage ou de climatisation. Sélectionnez l'un des deux niveaux proposés avec un niveau de priorité.</p>
                 {/* Sélection de techniciens via dropdown simple */}
                 {!isReadOnly && (
                     <div className="mb-4">
